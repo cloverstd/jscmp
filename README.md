@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/cloverstd/jscmp.svg?branch=master)](https://travis-ci.org/cloverstd/jscmp) [![Go Report Card](https://goreportcard.com/badge/github.com/cloverstd/jscmp)](https://goreportcard.com/report/github.com/cloverstd/jscmp) [![codecov](https://codecov.io/gh/cloverstd/jscmp/branch/master/graph/badge.svg)](https://codecov.io/gh/cloverstd/jscmp)
 ## Introduction
 
 The jscmp package can compare two objects like JavaScript compare rules.
