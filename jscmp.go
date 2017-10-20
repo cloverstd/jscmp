@@ -142,8 +142,10 @@ func Equals(left, right interface{}) bool {
 	}
 	// nil map != nil map in js
 	// if left ref to the same object with right return true
-	if fmt.Sprintf("%p", left) == fmt.Sprintf("%p", right) {
-		return true
+	if canGetPointer(left) && canGetPointer(right) {
+		if reflect.ValueOf(left).Pointer() == reflect.ValueOf(right).Pointer() {
+			return true
+		}
 	}
 	if _, ok := parseInt(left); ok {
 		return Equals(json.Number(fmt.Sprint(left)), right)
@@ -327,6 +329,9 @@ func checkComparable(i interface{}) bool {
 }
 
 func canGetPointer(i interface{}) bool {
+	if reflect.ValueOf(i).IsValid() {
+		return false
+	}
 	switch reflect.TypeOf(i).Kind() {
 	case reflect.Chan, reflect.Func, reflect.Map, reflect.Ptr, reflect.Slice, reflect.UnsafePointer:
 		return true
