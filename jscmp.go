@@ -147,6 +147,7 @@ func Equals(left, right interface{}) bool {
 			return true
 		}
 	}
+
 	if _, ok := parseInt(left); ok {
 		return Equals(json.Number(fmt.Sprint(left)), right)
 	} else if _, ok := parseFloat(left); ok {
@@ -220,7 +221,6 @@ func cmp(left, right interface{}) bool {
 		// try left as number failed, and try right as number
 		return !cmp(right, left)
 	}
-
 	if _, ok := parseInt(left); ok {
 		return cmp(json.Number(fmt.Sprint(left)), right)
 	} else if _, ok := parseFloat(left); ok {
@@ -329,10 +329,14 @@ func checkComparable(i interface{}) bool {
 }
 
 func canGetPointer(i interface{}) bool {
-	if reflect.ValueOf(i).IsValid() {
+	if !reflect.ValueOf(i).IsValid() {
 		return false
 	}
-	switch reflect.TypeOf(i).Kind() {
+	t := reflect.TypeOf(i)
+	if t == nil {
+		return false
+	}
+	switch t.Kind() {
 	case reflect.Chan, reflect.Func, reflect.Map, reflect.Ptr, reflect.Slice, reflect.UnsafePointer:
 		return true
 	}
