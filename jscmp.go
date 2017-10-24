@@ -158,8 +158,12 @@ func Equals(left, right interface{}) bool {
 		return Equals(fmt.Sprint(right), left)
 	}
 
-	if reflect.TypeOf(left).Kind() == reflect.TypeOf(right).Kind() {
-		return left == right
+	if reflect.TypeOf(left) != nil && reflect.TypeOf(right) != nil {
+		if checkComparable(left) && checkComparable(right) {
+			if reflect.TypeOf(left).Kind() == reflect.TypeOf(right).Kind() {
+				return left == right
+			}
+		}
 	}
 	return false
 }
@@ -407,8 +411,13 @@ func StrictEquals(x, y interface{}) bool {
 	} else if xf != nil && yi != nil {
 		return cmpIntFloat(*yi, *xf) == 0
 	}
-	if reflect.TypeOf(x).Kind() == reflect.TypeOf(y).Kind() {
-		return x == y
+
+	if reflect.TypeOf(x) != nil && reflect.TypeOf(y) != nil {
+		if checkComparable(x) && checkComparable(y) {
+			if reflect.TypeOf(x).Kind() == reflect.TypeOf(y).Kind() {
+				return x == y
+			}
+		}
 	}
 	return false
 }
