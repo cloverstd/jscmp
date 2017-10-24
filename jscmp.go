@@ -157,6 +157,10 @@ func Equals(left, right interface{}) bool {
 	} else if _, ok := parseFloat(right); ok {
 		return Equals(fmt.Sprint(right), left)
 	}
+
+	if reflect.TypeOf(left).Kind() == reflect.TypeOf(right).Kind() {
+		return left == right
+	}
 	return false
 }
 
@@ -402,6 +406,9 @@ func StrictEquals(x, y interface{}) bool {
 		return cmpIntFloat(*xi, *yf) == 0
 	} else if xf != nil && yi != nil {
 		return cmpIntFloat(*yi, *xf) == 0
+	}
+	if reflect.TypeOf(x).Kind() == reflect.TypeOf(y).Kind() {
+		return x == y
 	}
 	return false
 }
