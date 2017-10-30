@@ -317,6 +317,9 @@ func GTE(x, y interface{}) bool {
 
 // LT is <
 func LT(x, y interface{}) bool {
+	if x == Undefined || y == Undefined {
+		return false
+	}
 	if cmp(x, y) {
 		return false
 	}
@@ -325,12 +328,18 @@ func LT(x, y interface{}) bool {
 
 // LTE is <=
 func LTE(x, y interface{}) bool {
-	return !cmp(x, y)
+	if x == Undefined || y == Undefined {
+		return false
+	}
+	if Equals(x, y) {
+		return true
+	}
+	return LT(x, y)
 }
 
 // Not is !
 func Not(x interface{}) bool {
-	if isNull(x) || x == 0 || x == false || x == "" {
+	if isNull(x) || x == 0 || x == false || x == "" || x == Undefined {
 		return true
 	}
 	if n, ok := parseFloat(x); ok {
@@ -370,6 +379,8 @@ func StrictEquals(x, y interface{}) bool {
 		return false
 	} else if !isNull(x) && isNull(y) {
 		return false
+	} else if x == Undefined && y == Undefined {
+		return true
 	}
 	if canGetPointer(x) && canGetPointer(y) {
 		if reflect.ValueOf(x).Pointer() == reflect.ValueOf(y).Pointer() {

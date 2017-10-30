@@ -124,7 +124,7 @@ func TestGT(t *testing.T) {
 	}
 
 	if GT(Undefined, 10) {
-		t.Error("test undefined < 10 failed")
+		t.Error("test undefined > 10 failed")
 	}
 
 }
@@ -161,9 +161,28 @@ func TestGTE(t *testing.T) {
 	if GTE(10, map[int]int{}) {
 		t.Error("test !(10 >= {}) failed")
 	}
+
+	if GTE(Undefined, nil) {
+		t.Error("test undefined >= null failed")
+	}
+
+	if LTE(Undefined, 10) {
+		t.Error("test undefined < 10 failed")
+	}
+
+	if LTE(Undefined, nil) {
+		t.Error("test undefined <= null failed")
+	}
+
+	if LTE(Undefined, false) {
+		t.Error("test undefined <= false failed")
+	}
 }
 
 func TestStrictEquals(t *testing.T) {
+	if !StrictEquals(Undefined, Undefined) {
+		t.Error("test undefined === undefined failed")
+	}
 	if !StrictEquals(1, 1) {
 		t.Error("test 1 === 1 failed")
 	}
