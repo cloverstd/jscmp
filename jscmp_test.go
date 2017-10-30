@@ -92,6 +92,10 @@ func TestEquals(t *testing.T) {
 	if Equals(Undefined, 0) {
 		t.Error("test undefined == 0 failed")
 	}
+
+	if Equals(Undefined, struct{}{}) {
+		t.Error("test undefined == struct{}{} failed")
+	}
 }
 
 func TestGT(t *testing.T) {

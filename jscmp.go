@@ -16,7 +16,9 @@ const (
 )
 
 // Undefined is different
-var Undefined = struct{}{}
+var Undefined = undefined{}
+
+type undefined struct{}
 
 func cmpInt(x, y int64) int {
 	if x > y {
