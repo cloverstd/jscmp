@@ -15,6 +15,9 @@ const (
 	one  = json.Number("1")
 )
 
+// Undefined is different
+var Undefined = struct{}{}
+
 func cmpInt(x, y int64) int {
 	if x > y {
 		return 1
@@ -163,7 +166,12 @@ func Equals(left, right interface{}) bool {
 			if reflect.TypeOf(left).Kind() == reflect.TypeOf(right).Kind() {
 				return left == right
 			}
+		} else if right == Undefined && left == Undefined {
+			return true
 		}
+	}
+	if isNull(left) && right == Undefined || left == Undefined && isNull(right) {
+		return true
 	}
 	return false
 }
@@ -171,6 +179,9 @@ func Equals(left, right interface{}) bool {
 // cmp will return true if left > right
 // not support object
 func cmp(left, right interface{}) bool {
+	if left == Undefined || right == Undefined {
+		return false
+	}
 	_, leftNOk := left.(json.Number)
 	_, rightNOk := right.(json.Number)
 	if leftNOk || rightNOk {

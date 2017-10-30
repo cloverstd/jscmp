@@ -72,6 +72,26 @@ func TestEquals(t *testing.T) {
 	if !Equals(1.0, 1) {
 		t.Error("test 1.0 == 1 failed")
 	}
+
+	if !Equals(Undefined, nil) {
+		t.Error("test undefined == null failed")
+	}
+
+	if !Equals(Undefined, Undefined) {
+		t.Error("test undefined == undefined failed")
+	}
+
+	if StrictEquals(Undefined, nil) {
+		t.Error("test undefined === null failed")
+	}
+
+	if Equals(Undefined, false) {
+		t.Error("test undefined == false failed")
+	}
+
+	if Equals(Undefined, 0) {
+		t.Error("test undefined == 0 failed")
+	}
 }
 
 func TestGT(t *testing.T) {
@@ -98,6 +118,11 @@ func TestGT(t *testing.T) {
 	if !GT(10, -10) {
 		t.Error("test 10 > -10 failed")
 	}
+
+	if GT(Undefined, 10) {
+		t.Error("test undefined < 10 failed")
+	}
+
 }
 
 func TestGTE(t *testing.T) {
