@@ -141,6 +141,15 @@ func Equals(left, right interface{}) bool {
 		}
 		return Equals(zero, right)
 	}
+
+	if b, ok := left.([]byte); ok {
+		left = string(b)
+	}
+
+	if b, ok := right.([]byte); ok {
+		right = string(b)
+	}
+
 	// left is null and right is null
 	if isNull(left) && isNull(right) {
 		return true
@@ -241,6 +250,12 @@ func cmp(left, right interface{}) bool {
 		}
 		// try left as number failed, and try right as number
 		return !cmp(right, left)
+	}
+	if b, ok := left.([]byte); ok {
+		left = string(b)
+	}
+	if b, ok := right.([]byte); ok {
+		right = string(b)
 	}
 	if _, ok := parseInt(left); ok {
 		return cmp(json.Number(fmt.Sprint(left)), right)
