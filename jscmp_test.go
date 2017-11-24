@@ -69,6 +69,22 @@ func TestEquals(t *testing.T) {
 		t.Error("test 1.0 == '1.00' failed")
 	}
 
+	if !Equals(1.0, []byte("1.00")) {
+		t.Error("test byte 1.0 == '1.00' failed")
+	}
+
+	if !Equals([]byte("1.02"), 1.02) {
+		t.Error("test byte '1.02' == 1.02 failed")
+	}
+
+	if !Equals([]byte("1.02"), "1.02") {
+		t.Error("test byte '1.02' == '1.02' failed")
+	}
+
+	if !Equals(0, []byte{}) {
+		t.Error("test byte 0 == '0' failed")
+	}
+
 	if !Equals(1.0, 1) {
 		t.Error("test 1.0 == 1 failed")
 	}
@@ -115,6 +131,14 @@ func TestGT(t *testing.T) {
 		t.Error("test 10 > '-10' failed")
 	}
 
+	if !GT(10, []byte("-10")) {
+		t.Error("test byte 10 > '-10' failed")
+	}
+
+	if !GT(10, []byte{}) {
+		t.Error("test byte 10 > '' failed")
+	}
+
 	if !GT(-1, -10) {
 		t.Error("test -1 > -10 failed")
 	}
@@ -154,8 +178,16 @@ func TestGTE(t *testing.T) {
 		t.Error("test 0 >= '' failed")
 	}
 
+	if !GTE(0, []byte{}) {
+		t.Error("test byte 0 >= '' failed")
+	}
+
 	if !GTE(10, "") {
 		t.Error("test 10 >= '' failed")
+	}
+
+	if !GTE(10, []byte{}) {
+		t.Error("test byte 10 >= '' failed")
 	}
 
 	if GTE(10, map[int]int{}) {
@@ -172,6 +204,14 @@ func TestGTE(t *testing.T) {
 
 	if LTE(Undefined, nil) {
 		t.Error("test undefined <= null failed")
+	}
+
+	if !LTE(10, []byte("11")) {
+		t.Error("test byte 10 <= '11' failed")
+	}
+
+	if LTE([]byte("11"), 10) {
+		t.Error("test byte '11' <= 11 failed")
 	}
 
 	if LTE(Undefined, false) {
