@@ -90,7 +90,7 @@ func isNull(v interface{}) bool {
 // 0 == undefined ==> false
 // null == undefined
 func Equals(left, right interface{}) bool {
-	if _, ok := left.(json.Number); ok {
+	if _, ok := left.(Number); ok {
 		// left is number
 		if lefti, ok := parseInt(left); ok {
 			// left is int
@@ -132,7 +132,7 @@ func Equals(left, right interface{}) bool {
 		// it would not arrive here
 		return false
 	}
-	if _, ok := right.(json.Number); ok {
+	if _, ok := right.(Number); ok {
 		return Equals(right, left)
 	}
 	if t, ok := left.(bool); ok {
@@ -193,8 +193,8 @@ func cmp(left, right interface{}) bool {
 	if left == Undefined || right == Undefined {
 		return false
 	}
-	_, leftNOk := left.(json.Number)
-	_, rightNOk := right.(json.Number)
+	_, leftNOk := left.(Number)
+	_, rightNOk := right.(Number)
 	if leftNOk || rightNOk {
 		// at least one of json.Number
 		{
@@ -425,7 +425,7 @@ func StrictEquals(x, y interface{}) bool {
 		xf = new(float64)
 		*xf = reflect.ValueOf(x).Float()
 	default:
-		if xn, ok := x.(json.Number); ok {
+		if xn, ok := x.(Number); ok {
 			if i, err := xn.Int64(); err != nil {
 				f, err := xn.Float64()
 				if err != nil {
@@ -452,7 +452,7 @@ func StrictEquals(x, y interface{}) bool {
 		yf = new(float64)
 		*yf = reflect.ValueOf(y).Float()
 	default:
-		if yn, ok := y.(json.Number); ok {
+		if yn, ok := y.(Number); ok {
 			if i, err := yn.Int64(); err != nil {
 				f, err := yn.Float64()
 				if err != nil {
