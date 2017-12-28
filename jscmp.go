@@ -425,7 +425,21 @@ func StrictEquals(x, y interface{}) bool {
 		xf = new(float64)
 		*xf = reflect.ValueOf(x).Float()
 	default:
-		return false
+		if xn, ok := x.(json.Number); ok {
+			if i, err := xn.Int64(); err != nil {
+				f, err := xn.Float64()
+				if err != nil {
+					return false
+				}
+				xf = new(float64)
+				*xf = f
+			} else {
+				xi = new(int64)
+				*xi = i
+			}
+		} else {
+			return false
+		}
 	}
 	switch reflect.TypeOf(y).Kind() {
 	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
@@ -438,7 +452,21 @@ func StrictEquals(x, y interface{}) bool {
 		yf = new(float64)
 		*yf = reflect.ValueOf(y).Float()
 	default:
-		return false
+		if yn, ok := y.(json.Number); ok {
+			if i, err := yn.Int64(); err != nil {
+				f, err := yn.Float64()
+				if err != nil {
+					return false
+				}
+				yf = new(float64)
+				*xf = f
+			} else {
+				yi = new(int64)
+				*yi = i
+			}
+		} else {
+			return false
+		}
 	}
 
 	if xi != nil && yi != nil {

@@ -250,6 +250,23 @@ func TestStrictEquals(t *testing.T) {
 	if !StrictEquals(0, -0) {
 		t.Error("test 0 === -0 failed")
 	}
+
+	if !StrictEquals(json.Number("111.1"), 111.1) {
+		t.Error("test json.Number failed")
+	}
+
+	if !StrictEquals(json.Number("111.0"), 111) {
+		t.Error("test json.Number failed")
+	}
+
+	if !StrictEquals(json.Number("111"), 111.0) {
+		t.Error("test json.Number failed")
+	}
+
+	if StrictEquals(json.Number("111"), 111.1) {
+		t.Error("test json.Number failed")
+	}
+
 	var (
 		x, y interface{}
 	)
