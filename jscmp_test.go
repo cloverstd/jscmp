@@ -7,7 +7,14 @@ import (
 	. "github.com/cloverstd/jscmp"
 )
 
+func TestAAAA(t *testing.T) {
+	if !Equals(1, "1") {
+		t.Error("test 1 == '1' failed")
+	}
+}
+
 func TestEquals(t *testing.T) {
+
 	if !Equals(+0, -0) {
 		t.Error("test +0 == -0 failed")
 	}
@@ -112,6 +119,18 @@ func TestEquals(t *testing.T) {
 	if Equals(Undefined, struct{}{}) {
 		t.Error("test undefined == struct{}{} failed")
 	}
+
+	if Equals(3, 3.0000000000000011) {
+		t.Error("test 3 == 3.0000000000000011 failed")
+	}
+
+	if !Equals(float64(1234567), int64(1234567)) {
+		t.Error("test float64(1234567) == int64(1234567) failed")
+	}
+
+	if !Equals(float64(1234567.0), int64(1234567)) {
+		t.Error("test float64(1234567) == int64(1234567) failed")
+	}
 }
 
 func TestGT(t *testing.T) {
@@ -145,6 +164,10 @@ func TestGT(t *testing.T) {
 
 	if !GT(10, -10) {
 		t.Error("test 10 > -10 failed")
+	}
+
+	if !GT(float64(1234567.1), int64(1234567)) {
+		t.Error("test float64(1234567) > int64(1234567) failed")
 	}
 
 	if GT(Undefined, 10) {
