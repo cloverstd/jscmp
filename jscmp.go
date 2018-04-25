@@ -4,10 +4,8 @@ package jscmp
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"reflect"
 	"strconv"
-	"strings"
 )
 
 const (
@@ -28,6 +26,7 @@ func cmpInt(x, y int64) int {
 	}
 	return -1
 }
+
 func cmpFloat(x, y float64) int {
 	if x > y {
 		return 1
@@ -66,16 +65,26 @@ func cmpIntFloat(x int64, y float64) int {
 	} else if x > 0 && y < 0 {
 		return 1
 	}
-	n := 1
-	if x < 0 {
-		x = x * -1
-		y = math.Abs(y)
-		n = -1
+	if float64(x) > y {
+		return 1
+	} else if float64(x) < y {
+		return -1
 	}
-	return n * (strings.Compare(fmt.Sprint(x), fmt.Sprint(y)))
+	return 0
 }
+
 func isNull(v interface{}) bool {
 	return !reflect.ValueOf(v).IsValid()
+}
+
+func isNumber(v interface{}) bool {
+	switch v.(type) {
+	case int, int8, int16, int32, int64:
+		return true
+	case float32, float64:
+		return true
+	}
+	return false
 }
 
 // Equals will return true if left == right like js rule
@@ -161,7 +170,6 @@ func Equals(left, right interface{}) bool {
 			return true
 		}
 	}
-
 	if _, ok := parseInt(left); ok {
 		return Equals(json.Number(fmt.Sprint(left)), right)
 	} else if _, ok := parseFloat(left); ok {
@@ -293,7 +301,20 @@ func cmp(left, right interface{}) bool {
 	}
 	return false
 }
+
 func parseInt(i interface{}) (int64, bool) {
+	if ii, ok := i.(int64); ok {
+		return ii, ok
+	}
+	if ii, ok := i.(int32); ok {
+		return int64(ii), ok
+	}
+	if ii, ok := i.(int16); ok {
+		return int64(ii), ok
+	}
+	if ii, ok := i.(int8); ok {
+		return int64(ii), ok
+	}
 	s := fmt.Sprint(i)
 	if s == "" {
 		return 0, true
@@ -304,7 +325,14 @@ func parseInt(i interface{}) (int64, bool) {
 	}
 	return res, true
 }
+
 func parseFloat(i interface{}) (float64, bool) {
+	if f, ok := i.(float64); ok {
+		return f, ok
+	}
+	if f, ok := i.(float32); ok {
+		return float64(f), ok
+	}
 	res, err := strconv.ParseFloat(fmt.Sprint(i), 64)
 	if err != nil {
 		return 0, false
