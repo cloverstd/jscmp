@@ -315,10 +315,22 @@ func parseInt(i interface{}) (int64, bool) {
 	if ii, ok := i.(int8); ok {
 		return int64(ii), ok
 	}
-	s := fmt.Sprint(i)
+	if ii, ok := i.(int); ok {
+		return int64(ii), ok
+	}
+
+	s, ok := i.(string)
+	if !ok {
+		return 0, false
+	}
+	b, ok := i.([]byte)
+	if ok {
+		s = string(b)
+	}
 	if s == "" {
 		return 0, true
 	}
+
 	res, err := strconv.ParseInt(s, 10, 64)
 	if err != nil {
 		return 0, false
@@ -333,7 +345,17 @@ func parseFloat(i interface{}) (float64, bool) {
 	if f, ok := i.(float32); ok {
 		return float64(f), ok
 	}
-	res, err := strconv.ParseFloat(fmt.Sprint(i), 64)
+	s, ok := i.(string)
+	if !ok {
+		return 0, false
+	}
+	if b, ok := i.([]byte); ok {
+		s = string(b)
+	}
+	if s == "" {
+		return 0, true
+	}
+	res, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		return 0, false
 	}
