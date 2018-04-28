@@ -79,7 +79,7 @@ func isNull(v interface{}) bool {
 
 func isNumber(v interface{}) bool {
 	switch v.(type) {
-	case int, int8, int16, int32, int64:
+	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32:
 		return true
 	case float32, float64:
 		return true
@@ -315,7 +315,34 @@ func parseInt(i interface{}) (int64, bool) {
 	if ii, ok := i.(int8); ok {
 		return int64(ii), ok
 	}
-	s := fmt.Sprint(i)
+	if ii, ok := i.(int); ok {
+		return int64(ii), ok
+	}
+	if ii, ok := i.(uint8); ok {
+		return int64(ii), ok
+	}
+	if ii, ok := i.(uint16); ok {
+		return int64(ii), ok
+	}
+	if ii, ok := i.(uint32); ok {
+		return int64(ii), ok
+	}
+	if ii, ok := i.(uint); ok {
+		return int64(ii), ok
+	}
+	var s string
+	if i == nil {
+		return 0, false
+	}
+	if reflect.TypeOf(i).Kind() != reflect.String {
+		b, ok := i.([]byte)
+		if !ok {
+			return 0, false
+		}
+		s = string(b)
+	} else {
+		s = fmt.Sprint(i)
+	}
 	if s == "" {
 		return 0, true
 	}
@@ -333,7 +360,23 @@ func parseFloat(i interface{}) (float64, bool) {
 	if f, ok := i.(float32); ok {
 		return float64(f), ok
 	}
-	res, err := strconv.ParseFloat(fmt.Sprint(i), 64)
+	if i == nil {
+		return 0, false
+	}
+	var s string
+	if i == nil {
+		return 0, false
+	}
+	if reflect.TypeOf(i).Kind() != reflect.String {
+		b, ok := i.([]byte)
+		if !ok {
+			return 0, false
+		}
+		s = string(b)
+	} else {
+		s = fmt.Sprint(i)
+	}
+	res, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		return 0, false
 	}
