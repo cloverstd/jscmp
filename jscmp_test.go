@@ -160,6 +160,10 @@ func TestGT(t *testing.T) {
 		t.Error("test 10 > -10 failed")
 	}
 
+	if !GT(float64(1234567.1), int64(1234567)) {
+		t.Error("test float64(1234567) > int64(1234567) failed")
+	}
+
 	if GT(Undefined, 10) {
 		t.Error("test undefined > 10 failed")
 	}
