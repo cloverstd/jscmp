@@ -428,6 +428,21 @@ func Not(x interface{}) bool {
 	if isNull(x) || x == 0 || x == false || x == "" || x == Undefined {
 		return true
 	}
+	if n, ok := x.(json.Number); ok {
+		if i, err := n.Int64(); err != nil {
+			f, err := n.Float64()
+			if err != nil {
+				return false
+			}
+			if f == 0 {
+				return true
+			}
+		} else {
+			if i == 0 {
+				return true
+			}
+		}
+	}
 	return false
 }
 
