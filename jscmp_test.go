@@ -7,6 +7,32 @@ import (
 	. "github.com/cloverstd/jscmp"
 )
 
+func TestNot(t *testing.T) {
+	if !Not(0) {
+		t.Error("test !0 == false failed")
+	}
+	if !Not(nil) {
+		t.Error("test !null == false failed")
+	}
+	if !Not(false) {
+		t.Error("test !null == false failed")
+	}
+	if !Not("") {
+		t.Error(`test !"" == false failed`)
+	}
+	if !Not(Undefined) {
+		t.Error("test !Undefined == false failed")
+	}
+
+	if Not("0") {
+		t.Error(`test !"0" == false failed`)
+	}
+
+	if Not("1") {
+		t.Error(`test !"0" == false failed`)
+	}
+}
+
 func TestEquals(t *testing.T) {
 
 	if !Equals(+0, -0) {

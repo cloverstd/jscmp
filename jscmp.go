@@ -428,11 +428,6 @@ func Not(x interface{}) bool {
 	if isNull(x) || x == 0 || x == false || x == "" || x == Undefined {
 		return true
 	}
-	if n, ok := parseFloat(x); ok {
-		if n == 0 {
-			return true
-		}
-	}
 	return false
 }
 
