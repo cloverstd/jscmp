@@ -8,6 +8,12 @@ import (
 )
 
 func TestNot(t *testing.T) {
+	if !Not(json.Number("0.0")) {
+		t.Error("test !0.0 == false failed")
+	}
+	if !Not(json.Number("0")) {
+		t.Error("test !0 == false failed")
+	}
 	if !Not(0) {
 		t.Error("test !0 == false failed")
 	}
