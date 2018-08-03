@@ -425,7 +425,7 @@ func LTE(x, y interface{}) bool {
 
 // Not is !
 func Not(x interface{}) bool {
-	if isNull(x) || x == 0 || x == false || x == "" || x == Undefined {
+	if isNull(x) || x == 0 || x == false || x == "" || x == Undefined || x == 0.0 || x == nil {
 		return true
 	}
 	if n, ok := x.(json.Number); ok {
